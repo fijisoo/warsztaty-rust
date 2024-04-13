@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import {useEffect, useState} from 'react';
 import { warsztaty_backend } from 'declarations/warsztaty_backend';
 
 function App() {
-  const [greeting, setGreeting] = useState('');
+    const [messages, setMessages] = useState([]);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -12,6 +12,17 @@ function App() {
     });
     return false;
   }
+
+  useEffect(() => {
+      const getMessages = async () => {
+          const data = await warsztaty_backend.pobierz_wpisy();
+          console.log(data);
+          setMessages(data);
+      }
+
+      getMessages()
+
+  }, [])
 
   return (
     <main>
@@ -23,7 +34,7 @@ function App() {
         <input id="name" alt="Name" type="text" />
         <button type="submit">Click Me!</button>
       </form>
-      <section id="greeting">{greeting}</section>
+      <section id="messages">Messages: {messages.map(el => <p>{el}</p>)}</section>
     </main>
   );
 }
