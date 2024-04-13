@@ -3,7 +3,7 @@ import { warsztaty_backend } from 'declarations/warsztaty_backend';
 
 function App() {
     const [messages, setMessages] = useState([]);
-
+    const [inputText, setInputText] = useState('');
   function handleSubmit(event) {
     event.preventDefault();
     const name = event.target.elements.name.value;
@@ -13,27 +13,32 @@ function App() {
     return false;
   }
 
+    const getMessages = async () => {
+        const data = await warsztaty_backend.pobierz_wpisy();
+        console.log(data);
+        setMessages(data);
+    }
+
   useEffect(() => {
-      const getMessages = async () => {
-          const data = await warsztaty_backend.pobierz_wpisy();
-          console.log(data);
-          setMessages(data);
-      }
-
       getMessages()
-
   }, [])
+
+    const handleMessageChange = (e) => {
+      setInputText(e.target.value);
+    }
+
+    const handlePushMessage = async () => {
+        await warsztaty_backend.dodaj_wpis(inputText)
+        await getMessages()
+    }
 
   return (
     <main>
       <img src="/logo2.svg" alt="DFINITY logo" />
       <br />
       <br />
-      <form action="#" onSubmit={handleSubmit}>
-        <label htmlFor="name">Enter your name: &nbsp;</label>
-        <input id="name" alt="Name" type="text" />
-        <button type="submit">Click Me!</button>
-      </form>
+        Dodaj wpis: <input type="text" onChange={handleMessageChange}/>
+        <button onClick={handlePushMessage}>DODAJ WPIS</button>
       <section id="messages">Messages: {messages.map(el => <p>{el}</p>)}</section>
     </main>
   );
