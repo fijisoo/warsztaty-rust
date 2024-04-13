@@ -3,7 +3,10 @@
     "warsztaty_backend": {
       "candid": "src/warsztaty_backend/warsztaty_backend.did",
       "package": "warsztaty_backend",
-      "type": "rust"
+      "type": "custom",
+      "candid_gen": "automatic",
+      "build": "./build.sh warsztaty_backend",
+      "wasm": "target/wasm32-unknown-unknown/release/warsztaty_backend.wasm"
     },
     "warsztaty_frontend": {
       "dependencies": [
